@@ -342,16 +342,19 @@ class TgUploader:
     # ===========================================================================================================
 
     # ================================================= MESSAGE =================================================
-    @handle_message
     async def _msg_to_reply(self):
         if self._leech_log and self._leech_log != self._listener.message.chat.id:
             caption = f'<b>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n{self._listener.name}\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</b>'
-            if self._thumb and await aiopath.exists(self._thumb):
-                self._send_msg: Message = await bot.send_photo(self._leech_log, photo=self._thumb, caption=caption)
-            else:
-                self._send_msg: Message = await bot.send_message(self._leech_log, caption, disable_web_page_preview=True)
-            if config_dict['LEECH_INFO_PIN']:
-                await self._send_msg.pin(both_sides=True)
+            try:
+                if self._thumb and await aiopath.exists(self._thumb):
+                    self._send_msg: Message = await bot.send_photo(self._leech_log, photo=self._thumb, caption=caption)
+                else:
+                    self._send_msg: Message = await bot.send_message(self._leech_log, caption, disable_web_page_preview=True)
+                if config_dict['LEECH_INFO_PIN']:
+                    await self._send_msg.pin(both_sides=True)
+            except Exception as e:
+                LOGGER.warning('_msg_to_reply leech_log failed: %s, falling back to listener.message', e)
+                self._send_msg = self._listener.message
         else:
             try:
                 self._send_msg: Message = await bot.get_messages(self._listener.message.chat.id, self._listener.mid)
