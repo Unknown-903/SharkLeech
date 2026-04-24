@@ -33,11 +33,11 @@ default_values = {'AUTO_DELETE_MESSAGE_DURATION': 30,
                   'CLOUD_LINK_FILTERS': '',
                   'UPSTREAM_BRANCH': 'main',
                   'FSUB_BUTTON_NAME': 'Join Group',
-                  'CHANNEL_USERNAME': 'SharkToonsIndia',
-                  'AUTHOR_NAME': 'Shark Toons India',
-                  'AUTHOR_URL': 'https://t.me/SharkToonsIndia',
+                  'CHANNEL_USERNAME': 'hexafreinds',
+                  'AUTHOR_NAME': 'MAHESH',
+                  'AUTHOR_URL': 'https://t.me/maheshsirop',
                   'DRIVE_SEARCH_TITLE': 'Drive Search',
-                  'GD_INFO': 'By @SharkToonsIndia',
+                  'GD_INFO': 'By @maheshsirop',
                   'RCLONE_TFSIMULATION': 4,
                   'SESSION_TIMEOUT': 0,
                   'PROG_FINISH': '⬢',
@@ -49,7 +49,7 @@ default_values = {'AUTO_DELETE_MESSAGE_DURATION': 30,
                   'DAILY_LIMIT_SIZE': 50,
                   'TSEARCH_TITLE': 'Torrent Search',
                   'DISABLE_VIDTOOLS': 'Nope',
-                  'COMPRESS_BANNER': 'Re-Encoded by @SharkToonsIndia',
+                  'COMPRESS_BANNER': 'Re-Encoded by @maheshsirop',
                   'LIB264_PRESET': 'superfast',
                   'LIB265_PRESET': 'faster',
                   'HARDSUB_FONT_NAME': 'Simple Day Mistu',
@@ -247,7 +247,10 @@ async def load_config():
     # ============================== LOGS ==================================
     ONCOMPLETE_LEECH_LOG = environ.get('ONCOMPLETE_LEECH_LOG', 'True').lower() == 'true'
     LEECH_LOG = environ.get('LEECH_LOG', '')
-    LEECH_LOG = int(LEECH_LOG) if LEECH_LOG.isdigit() or LEECH_LOG.startswith('-') else LEECH_LOG
+    try:
+        LEECH_LOG = int(LEECH_LOG) if LEECH_LOG else ''
+    except ValueError:
+        pass  # keep as string if not a valid int
 
     MIRROR_LOG = environ.get('MIRROR_LOG', '')
     MIRROR_LOG = int(MIRROR_LOG) if MIRROR_LOG.isdigit() or MIRROR_LOG.startswith('-') else MIRROR_LOG
@@ -410,7 +413,7 @@ async def load_config():
     AUTHOR_NAME = environ.get('AUTHOR_NAME', 'Anonim')
     AUTHOR_URL = environ.get('AUTHOR_URL', 'https://t.me/TrollUser')
     DRIVE_SEARCH_TITLE = environ.get('DRIVE_SEARCH_TITLE', 'Drive Search')
-    GD_INFO = environ.get('GD_INFO', 'Uploaded by Shark Mirror Leech Bot')
+    GD_INFO = environ.get('GD_INFO', 'Uploaded by Telegram Mirror Bot')
     PROG_FINISH = environ.get('PROG_FINISH', '⬢')
     PROG_UNFINISH = environ.get('PROG_UNFINISH', '⬡')
     SOURCE_LINK_TITLE = environ.get('SOURCE_LINK_TITLE', 'Source Link')
