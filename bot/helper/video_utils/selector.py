@@ -135,7 +135,7 @@ class SelectMode():
                         buttons.button_data(f"{'🔥 ' if await aiopath.exists(self.extra_data.get('subfile', '')) else ''}Sub File", 'vidtool subfile', 'header')
                     buttons.button_data('Font Style', 'vidtool fontstyle', 'header')
 
-            if self.mode in ('compress', 'watermark') or self.extra_data.get('hardsub'):
+            if self.mode in ('compress', 'watermark', 'convert') or self.extra_data.get('hardsub'):
                 buttons.button_data('Quality', 'vidtool quality', 'header')
             if self.mode == 'watermark':
                 buttons.button_data('Popup', 'vidtool popupwm', 'header')
@@ -156,7 +156,7 @@ class SelectMode():
                     buttons.button_data('Auto', 'vidtool sync_auto')
                 case 'quality':
                     bnum = 3
-                    [buttons.button_data(f"{'🔥 ' if self.extra_data.get('quality') == key else ''}{key}", f'vidtool quality {key}') for key in ['1080p', '720p', '540p', '480p', '360p']]
+                    [buttons.button_data(f"{'🔥 ' if self.extra_data.get('quality') == key else ''}{key}", f'vidtool quality {key}') for key in ['2160p', '1440p', '1080p', '720p', '540p', '480p', '360p', '240p']]
                     buttons.button_data('<<', 'vidtool back', 'footer')
                     buttons.button_data('Done', 'vidtool done', 'footer')
                 case 'popupwm':
