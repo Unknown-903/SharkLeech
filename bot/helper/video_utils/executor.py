@@ -45,7 +45,7 @@ class VidEcxecutor(FFProgress):
         self._gid = gid
         self._start_time = time()
         self._files = []
-        self._qual = {'1080p': '1920', '720p': '1280', '540p': '960', '480p': '854', '360p': '640'}
+        self._qual = {'2160p': '3840', '1440p': '2560', '1080p': '1920', '720p': '1280', '540p': '960', '480p': '854', '360p': '640', '240p': '426'}
         super().__init__()
         self.is_cancel = False
 
@@ -273,7 +273,7 @@ class VidEcxecutor(FFProgress):
         await gather(*[clean_target(file) for file in task_files])
         return await self._final_path(self._up_path)
 
-    async def _vid_convert(self):
+    async def _vid_convert(self, quality=None, **kwargs):
         file_list = await self._get_files()
         multi = len(file_list) > 1
         if not file_list:
@@ -301,8 +301,12 @@ class VidEcxecutor(FFProgress):
                 _, self.size = await gather(self._name_base_dir(self.path, f'Convert-{self.data}', multi), get_path_size(self.path))
             self.outfile = ospath.join(base_dir, self.name)
             self._files.append(self.path)
-            cmd = [FFMPEG_NAME, '-hide_banner', '-ignore_unknown', '-y', '-i', self.path, '-map', '0:v:0',
-                   '-vf', f'scale={self._qual[self.data]}:-2', '-map', '0:a:?', '-map', '0:s:?', '-c:a', 'copy', '-c:s', 'copy', self.outfile]
+            cmd = [FFMPEG_NAME, '-hide_banner', '-ignore_unknown', '-y', '-i', self.path, '-map', '0:v:0']
+            if quality and quality in self._qual:
+                cmd.extend(['-vf', f'scale={self._qual[quality]}:-2'])
+            else:
+                cmd.extend(['-vf', f'scale={self._qual[self.data]}:-2']) if self.data in self._qual else None
+            cmd.extend(['-map', '0:a:?', '-map', '0:s:?', '-c:a', 'copy', '-c:s', 'copy', self.outfile])
             await self._run_cmd(cmd)
             if self.is_cancel:
                 return
