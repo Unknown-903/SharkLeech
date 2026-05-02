@@ -78,42 +78,30 @@ async def edit_video_metadata(user_id, file_path):
         'ffmpeg', '-y', '-i', file_path, '-c', 'copy',
         '-metadata:s:v:0', f'title={metadata_text}',
         '-metadata', f'title={metadata_text}',
-        '-metadata', 'copyright=Ripped And Encoded By -- SharkToonsIndia --',
-        '-metadata', 'Copyright=Ripped And Encoded By -- SharkToonsIndia --',
-        '-metadata', 'COPYRIGHT=Ripped And Encoded By -- SharkToonsIndia --',
-        '-metadata', f'description=This File Is Downloaded From "@SharkToonsIndia " so Please Join Our Channels and Support Us We Need Your Support  ~ SharkToonsIndia ',
-        '-metadata', f'Description=This File Is Downloaded From "@SharkToonsIndia " so Please Join Our Channels and Support Us We Need Your Support  ~ SharkToonsIndia ',
-        '-metadata', f'license=© @SharkToonsIndia - All Rights Reserved. No reuploading or copying. DMCA Protected. Any unauthorized distribution, reproduction, or modification is a violation of DMCA and copyright laws.',
-        '-metadata', f'LICENSE=© @SharkToonsIndia - All Rights Reserved. No reuploading or copying. DMCA Protected. Any unauthorized distribution, reproduction, or modification is a violation of DMCA and copyright laws.',
-        '-metadata', f'License=© @SharkToonsIndia - All Rights Reserved. No reuploading or copying. DMCA Protected. Any unauthorized distribution, reproduction, or modification is a violation of DMCA and copyright laws.',
-        '-metadata', f'author=SharkToonsIndia',
-        '-metadata', f'summary=This File Is Downloaded From "@SharkToonsIndia " so Please Join Our Channels and Support Us We Need Your Support  ~ SharkToonsIndia ',
-        '-metadata', f'comment=Ripped And Encoded By -- SharkToonsIndia --',
-        '-metadata', f'Comment=Ripped And Encoded By -- SharkToonsIndia --',
-        '-metadata', f'artist=SharkToonsIndia',
-        '-metadata', f'album=SharkToonsIndia',
-        '-metadata', f'genre=SharkToonsIndia',
-        '-metadata', f'Genre=SharkToonsIndia',
-        '-metadata', f'GENRE=SharkToonsIndia',
-        '-metadata', f'date=',
-        '-metadata', f'creation_time=',
-        '-metadata', f'language=',
-        '-metadata', f'publisher=SharkToonsIndia',
-        '-metadata', f'encoder=Encoded By SharkToonsIndia',
-        '-metadata', f'SUMMARY=This File Is Downloaded From "@SharkToonsIndia " so Please Join Our Channels and Support Us We Need Your Support  ~ SharkToonsIndia ',
-        '-metadata', f'Summary=This File Is Downloaded From "@SharkToonsIndia " so Please Join Our Channels and Support Us We Need Your Support  ~ SharkToonsIndia ',
-        '-metadata', f'AUTHOR=SharkToonsIndia',
-        '-metadata', f'WEBSITE=Just Join Our Telegram Channel https://t.me/SharkToonsIndia, there you will get all details regarding our website',
-        '-metadata', f'COMMENT=Ripped And Encoded By -- SharkToonsIndia -- ',
-        '-metadata', f'ENCODER=Encoded By SharkToonsIndia',
-        '-metadata', f'Encoder=Encoded By SharkToonsIndia',
-        '-metadata', f'FILENAME=',
-        '-metadata', f'MIMETYPE=',
-        '-metadata', f'PURL=',
-        '-metadata', f'ALBUM=SharkToonsIndia',
-        '-metadata', f'CHANNEL=https://t.me/SharkToonsIndia',
-        '-metadata', f'Channel=https://t.me/SharkToonsIndia',
-        '-metadata', f'channel=https://t.me/SharkToonsIndia'
+        '-metadata', 'copyright=',
+        '-metadata', 'description=',
+        '-metadata', 'license=',
+        '-metadata', 'LICENSE=',
+        '-metadata', 'author=',
+        '-metadata', 'summary=',
+        '-metadata', 'comment=',
+        '-metadata', 'artist=',
+        '-metadata', 'album=',
+        '-metadata', 'genre=',
+        '-metadata', 'date=',
+        '-metadata', 'creation_time=',
+        '-metadata', 'language=',
+        '-metadata', 'publisher=',
+        '-metadata', 'encoder=',
+        '-metadata', 'SUMMARY=',
+        '-metadata', 'AUTHOR=',
+        '-metadata', 'WEBSITE=',
+        '-metadata', 'COMMENT=',
+        '-metadata', 'ENCODER=',
+        '-metadata', 'FILENAME=',
+        '-metadata', 'MIMETYPE=',
+        '-metadata', 'PURL=',
+        '-metadata', 'ALBUM='
     ]
 
     audio_index = 0
@@ -238,20 +226,13 @@ async def get_bot_pm_button():
 async def send_to_chat(chat_id=None, message=None, text=None, buttons=None, reply=False, photo=False):
     if chat_id and not reply:
         try:
-            if photo and config_dict['IMAGES']:
-                IMAGES = choice(config_dict['IMAGES'])
-                await bot.send_photo(chat_id, IMAGES, text, reply_markup=buttons)
-            else:
-                await bot.send_message(chat_id, text, reply_markup=buttons)
+            await bot.send_message(chat_id, text, reply_markup=buttons)
         except Exception as e:
             print(f"An error occurred: {str(e)}")
             pass
     else:
         try:
-            if photo and config_dict['IMAGES']: 
-                return await bot.send_photo(chat_id=message.chat.id, photo=choice(config_dict['IMAGES']), caption=text, reply_to_message_id=message.id, reply_markup=buttons)
-            else:
-                return await message.reply(text=text, quote=True, disable_web_page_preview=True, disable_notification=True, reply_markup=buttons)
+            return await message.reply(text=text, quote=True, disable_web_page_preview=True, disable_notification=True, reply_markup=buttons)
         except FloodWait as f:
             LOGGER.warning(str(f))
             if block:
@@ -424,7 +405,7 @@ async def checking_token_status(message, button=None):
             button = ButtonMaker()
         button.ubutton('Generate Token', short_url(
             f'https://t.me/{bot_name}?{BotCommands.StartCommand}={token}'))
-        return f"Your Ads token is expired, generate your token and try again.\n\n<b>Token Timeout:</b> {get_readable_time(int(config_dict['TOKEN_TIMEOUT']))}.\n\n<b>What is token?</b>\nThis is an ads token. If you pass 1 ad, you can use the bot for {get_readable_time(int(config_dict['TOKEN_TIMEOUT']))} after passing the ad.\n\n<b>Token Generate Video Tutorial:</b> ⬇️\nhttps://t.me/sharktoonsindia/14", button
+        return f"Your Ads token is expired, generate your token and try again.\n\n<b>Token Timeout:</b> {get_readable_time(int(config_dict['TOKEN_TIMEOUT']))}.\n\n<b>What is token?</b>\nThis is an ads token. If you pass 1 ad, you can use the bot for {get_readable_time(int(config_dict['TOKEN_TIMEOUT']))} after passing the ad.\n\n<b>Token Generate Video Tutorial:</b> ⬇️\nhttps://t.me/hexafreinds/67281", button
     return None, button
     
 def check_storage_threshold(size, threshold, arch=False, alloc=False):
@@ -812,11 +793,9 @@ async def start(client, message):
         )
     else:
         buttons = ButtonMaker()
-        buttons.ubutton("Owner V1", "https://t.me/SupremeYoriichi")
-        buttons.ubutton("Owner", "https://t.me/OfficialCreater")
-        buttons.ubutton("Channel", "https://t.me/SharkToonsIndia")
-        buttons.ubutton("Group", "https://t.me/+yxPxkJ_tuoFmODNl")
-        reply_markup = buttons.build_menu(4)
+        buttons.ubutton("Group", "https://t.me/hexafreinds")
+        buttons.ubutton("Owner", "https://t.me/maheshsirop")
+        reply_markup = buttons.build_menu(2)
         start_string = f'''This bot can mirror all your links|files|torrents to Google Drive or any rclone cloud or to telegram.\nType /{BotCommands.HelpCommand} to get a list of available commands'''
         await send_to_chat(message=message, text=start_string, buttons=reply_markup, reply=True, photo=True)
     await DbManager().update_pm_users(message.from_user.id)

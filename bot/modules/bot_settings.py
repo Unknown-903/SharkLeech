@@ -153,7 +153,7 @@ async def get_buttons(key=None, edit_type=None):
 async def update_buttons(message: Message, key: str=None, edit_type: str=None):
     msg, image, buttons = await get_buttons(key, edit_type)
     if config_dict['ENABLE_IMAGE_MODE']:
-        await editPhoto(msg, message, image, buttons)
+        await editMessage(msg, message, buttons)
     else:
         await editMessage(msg, message, buttons)
 
