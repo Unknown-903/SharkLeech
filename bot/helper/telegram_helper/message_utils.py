@@ -1,7 +1,7 @@
 from asyncio import sleep, gather
 from functools import wraps
 from pyrogram import Client
-from pyrogram.errors import FloodWait, UserBlocked, UserDeactivatedBan, UserDeactivated, UserIsBlocked, InputUserDeactivated, ChannelInvalid, PeerIdInvalid
+from pyrogram.errors import FloodWait, UserBlocked, UserDeactivatedBan, UserDeactivated, UserIsBlocked, InputUserDeactivated
 from pyrogram.types import Message, InlineKeyboardMarkup, InputMediaPhoto
 from re import match as re_match, findall as re_findall
 from time import time
@@ -52,9 +52,6 @@ def handle_message(func):
             if DATABASE_URL:
                 user_id = args[0] if func_name == 'copyMessage' else args[1]
                 await DbManager().delete_user(user_id)
-        except (ChannelInvalid, PeerIdInvalid) as e:
-            LOGGER.error('%s(): %s', func_name, e)
-            return None
         except Exception as e:
             if not kwargs.get('nolog'):
                 LOGGER.error('%s(): %s', func_name, e)
@@ -63,9 +60,8 @@ def handle_message(func):
     return wrapper
 
 
-async def sendingMessage(text: str, message: Message, photo, reply_markup: InlineKeyboardMarkup=None):
-    return (await sendPhoto(text, message, photo, reply_markup) if config_dict['ENABLE_IMAGE_MODE'] else
-            await sendMessage(limit.text(text), message, reply_markup))
+async def sendingMessage(text: str, message: Message, photo=None, reply_markup: InlineKeyboardMarkup=None):
+    return await sendMessage(limit.text(text), message, reply_markup)
 
 
 @handle_message
