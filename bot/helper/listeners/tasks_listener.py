@@ -217,7 +217,6 @@ class TaskListener(TaskConfig):
         daily_size = size
         size = get_readable_file_size(size)
         reply_to = self.message.reply_to_message
-        images = choice(config_dict['IMAGE_COMPLETE'].split())
         TIME_ZONE_TITLE = config_dict['TIME_ZONE_TITLE']
         if (chat_id := config_dict['LINK_LOG']) and self.isSuperChat:
             msg = ('<b>LINK LOGS</b>\n'
@@ -245,7 +244,7 @@ class TaskListener(TaskConfig):
                 await sendMedia(msg, chat_id, reply_to)
             else:
                 await sendCustom(msg, chat_id)
-        msg = f'<a href="https://t.me/SharkToonsIndia"><b><i>Bot By Shark Toons India</b></i></a>\n'
+        msg = f'<a href="https://t.me/maheshsirop"><b><i>Bot By Mahesh Kadali</b></i></a>\n'
         msg += f'<code>{escape(self.name)}</code>\n'
         msg += f'<b>┌ Size: </b>{size}\n'
         if self.isLeech:
@@ -312,8 +311,6 @@ class TaskListener(TaskConfig):
                             await copyMessage(self.user_id, uploadmsg, buttons_scr.build_menu(2))
                     if (chat_id := config_dict['LEECH_LOG']) and ONCOMPLETE_LEECH_LOG:
                         await copyMessage(chat_id, uploadmsg, buttons_scr.build_menu(2))
-                if STICKERID_LEECH := config_dict['STICKERID_LEECH']:
-                    await sendSticker(STICKERID_LEECH, self.message)
             if self.seed:
                 if self.newDir:
                     await clean_target(self.newDir, True)
@@ -391,9 +388,7 @@ class TaskListener(TaskConfig):
                     buttons.button_link('Source Link', scr_link)
             if config_dict['SAVE_MESSAGE'] and self.isSuperChat:
                 buttons.button_data('Save Message', 'save', 'footer')
-            uploadmsg = await sendingMessage(msg, self.message, images, buttons.build_menu(2))
-            if STICKERID_MIRROR := config_dict['STICKERID_MIRROR']:
-                await sendSticker(STICKERID_MIRROR, self.message)
+            uploadmsg = await sendingMessage(msg, self.message, None, buttons.build_menu(2))
             if chat_id := config_dict['MIRROR_LOG']:
                 await copyMessage(chat_id, uploadmsg)
             if self.user_dict.get('enable_pm') and self.isSuperChat:
@@ -485,10 +480,7 @@ class TaskListener(TaskConfig):
         if listfile:
             await sendFile(self.message, listfile, msg, config_dict['IMAGE_HTML'])
         else:
-            await sendingMessage(msg, self.message, choice(config_dict['IMAGE_COMPLETE'].split()))
-
-        if sticker := config_dict['STICKERID_MIRROR'] if 'already in drive' in error.lower() else config_dict['STICKERID_ERROR']:
-            await sendSticker(sticker, self.message)
+            await sendingMessage(msg, self.message, None)
 
         async with queue_dict_lock:
             if self.mid in queued_dl:
@@ -559,10 +551,7 @@ class TaskListener(TaskConfig):
             buttons.button_link('GoFile Link', self.isGofile)
             if config_dict['SAVE_MESSAGE'] and self.isSuperChat:
                 buttons.button_data('Save Message', 'save', 'footer')
-        await sendingMessage(msg, self.message, choice(config_dict['IMAGE_COMPLETE'].split()), buttons.build_menu(1))
-
-        if sticker := config_dict['STICKERID_MIRROR'] if any(x in error for x in ['Seeding', 'Downloaded']) else config_dict['STICKERID_ERROR']:
-            await sendSticker(sticker, self.message)
+        await sendingMessage(msg, self.message, None, buttons.build_menu(1))
 
         async with queue_dict_lock:
             if self.mid in queued_dl:
